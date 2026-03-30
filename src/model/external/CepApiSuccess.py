@@ -36,7 +36,3 @@ class CepApiSuccess(BaseModel):
     neighborhood: str
     street: str
     location: _Location
-
-    @classmethod
-    def from_json(cls, json: str) -> "CepApiSuccess":
-        return cls.model_validate_json(json)
