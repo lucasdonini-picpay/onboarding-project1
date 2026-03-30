@@ -1,6 +1,6 @@
 from pydantic import BaseModel
-from model.external.CepApiSuccess import CepApiSuccess
-from model.Cep import Cep
+from src.model.external.CepApiSuccess import CepApiSuccess
+from src.model.Cep import Cep
 
 
 class Address(BaseModel):
