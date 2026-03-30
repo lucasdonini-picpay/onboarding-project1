@@ -35,7 +35,7 @@ class CepApiSuccess(BaseModel):
     city: str
     neighborhood: str
     street: str
-    localtion: _Location
+    location: _Location
 
     @classmethod
     def from_json(cls, json: str) -> "CepApiSuccess":
