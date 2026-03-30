@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from typing import Optional
 
 """
 API 200 repose JSON:
@@ -20,8 +21,8 @@ API 200 repose JSON:
 
 
 class _Coordinate(BaseModel):
-    latitude: str
-    longitude: str
+    latitude: Optional[str]
+    longitude: Optional[str]
 
 
 class _Location(BaseModel):

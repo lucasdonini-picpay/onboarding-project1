@@ -4,7 +4,7 @@ from src.model.Cep import Cep
 
 from fastapi import FastAPI
 from dotenv import load_dotenv
-import requests, os
+import requests, os, asyncio, httpx
 
 load_dotenv()
 BASE_URL: str = os.getenv("API_URL")
@@ -18,10 +18,11 @@ def test_connection():
 
 
 @app.get("/cep/{cep}")
-def get_cep(cep: str):
+async def get_cep(cep: str):
     parsed_cep = Cep(value=cep)
-    response = requests.get(f"{BASE_URL}/{parsed_cep.value}")
+    client = httpx.AsyncClient(verify=False)
+    response = await client.get(f"{BASE_URL}/{parsed_cep.value}")
     response.raise_for_status()
-    parsed_response = CepApiSuccess(**response)
+    parsed_response = CepApiSuccess(**response.json())
     address = Address.from_response(parsed_response)
     return address

@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from typing import Optional
 from src.model.external.CepApiSuccess import CepApiSuccess
 from src.model.Cep import Cep
 
@@ -9,7 +10,7 @@ class Address(BaseModel):
     city: str
     neighborhood: str
     street: str
-    coordinates: str
+    coordinates: Optional[str]
 
     @classmethod
     def from_response(cls, response: CepApiSuccess) -> "Address":
