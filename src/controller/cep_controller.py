@@ -5,19 +5,20 @@ from httpx import Response
 import httpx, os
 
 from model.external.cep_api_types import CepApiSuccess
-from src.model.Address import Address
+from src.model.address import Address
 from src.utils.cep_utils import validate_cep
 
 load_dotenv()
-BASE_URL = os.getenv("API_URL")
+ENV_VAR_NAME = "CEP_API_URL"
+BASE_URL = os.getenv(ENV_VAR_NAME)
+if not BASE_URL:
+    raise RuntimeError(f"Missing environment variable: {ENV_VAR_NAME}")
+
 router = APIRouter()
 
 
 @router.get("/cep/{cep}")
 async def get_cep(cep: str) -> JSONResponse:
-    if not BASE_URL:
-        raise RuntimeError("Missing environment variable: BASE_URL")
-
     if not validate_cep(cep):
         raise ValueError("Invalid CEP")
 
