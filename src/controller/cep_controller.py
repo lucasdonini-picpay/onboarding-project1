@@ -22,9 +22,8 @@ async def get_cep(cep: str) -> JSONResponse:
     if not validate_cep(cep):
         raise ValueError("Invalid CEP")
 
-    response: Response
     client = httpx.AsyncClient(verify=False)
-    response = await client.get(f"{BASE_URL}/{cep}")
+    response: Response = await client.get(f"{BASE_URL}/{cep}")
     try:
         response.raise_for_status()
         parsed_response = CepApiSuccess(**response.json())
