@@ -16,7 +16,7 @@ def test_valid_data():
 
     address: Address = Address.from_response(response)
 
-    assert address.cep.value == response.cep
+    assert address.cep == response.cep
     assert address.state == response.state
     assert address.city == response.city
     assert address.neighborhood == response.neighborhood

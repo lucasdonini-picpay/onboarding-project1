@@ -1,6 +1,6 @@
 from src.model.Address import Address
 from src.model.external.CepApiSuccess import CepApiSuccess
-from src.model.Cep import Cep
+from src.utils.cep_utils import validate_cep
 
 from fastapi import FastAPI
 from dotenv import load_dotenv
@@ -19,9 +19,11 @@ def test_connection():
 
 @app.get("/cep/{cep}")
 async def get_cep(cep: str):
-    parsed_cep = Cep(value=cep)
+    if not validate_cep(cep):
+        raise ValueError("Invalid CEP")
+
     client = httpx.AsyncClient(verify=False)
-    response = await client.get(f"{BASE_URL}/{parsed_cep.value}")
+    response = await client.get(f"{BASE_URL}/{cep}")
     response.raise_for_status()
     parsed_response = CepApiSuccess(**response.json())
     address = Address.from_response(parsed_response)
