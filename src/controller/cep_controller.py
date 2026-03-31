@@ -1,5 +1,6 @@
 from fastapi import APIRouter
 from fastapi.responses import JSONResponse
+from fastapi.encoders import jsonable_encoder
 from dotenv import load_dotenv
 from httpx import Response
 import httpx, os
@@ -24,10 +25,12 @@ async def get_cep(cep: str) -> JSONResponse:
 
     client = httpx.AsyncClient(verify=False)
     response: Response = await client.get(f"{BASE_URL}/{cep}")
+
     try:
         response.raise_for_status()
-        parsed_response = CepApiSuccess(**response.json())
-        address = Address.from_response(parsed_response)
-        return JSONResponse(status_code=200, content=address)
     except Exception:
         return JSONResponse(status_code=response.status_code, content=response.json())
+
+    parsed_response = CepApiSuccess(**response.json())
+    address = Address.from_response(parsed_response)
+    return JSONResponse(status_code=200, content=jsonable_encoder(address))
