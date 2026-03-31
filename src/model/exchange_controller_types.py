@@ -8,9 +8,9 @@ class ExchangeRequest(BaseModel):
 
 
 class ExchangeResponse(BaseModel):
-    original_value: float
-    original_currency: str
-    value: float
+    bid: float
+    ask: float
     currency: str
-    exchange_rate: float
-    exchange_rate_date: datetime
+    bid_rate: float
+    ask_rate: float
+    rate_date: datetime
