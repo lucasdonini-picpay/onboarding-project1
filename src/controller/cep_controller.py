@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 from httpx import Response
 import httpx, os
 
-from model.external.cep_api_types import CepApiSuccess
+from src.model.external.cep_api_types import CepApiSuccess
 from src.model.address import Address
 from src.utils.cep_utils import validate_cep
 
