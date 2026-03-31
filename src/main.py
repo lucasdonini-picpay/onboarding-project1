@@ -1,10 +1,11 @@
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
-from .controller import cep_controller
+from .controller import cep_controller, exchange_controller
 import logging
 
 app = FastAPI()
 app.include_router(cep_controller.router)
+app.include_router(exchange_controller.router)
 
 
 @app.middleware("http")
@@ -13,7 +14,7 @@ async def exception_handler(request: Request, call_next):
         response = await call_next(request)
         return response
     except Exception as e:
-        logging.error(f"Exception captured by middleware: {e}")
+        logging.exception("Exception captured by middleware")
         match e:
             case ValueError():
                 return JSONResponse(status_code=400, content={"detail": f"{e}"})
