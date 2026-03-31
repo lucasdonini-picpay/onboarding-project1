@@ -31,5 +31,5 @@ class Address(BaseModel):
             city=response.city,
             neighborhood=response.neighborhood,
             street=response.street,
-            coordinates=coordinate,
+            coordinates=coordinate if coordinate else None,
         )
