@@ -21,8 +21,8 @@ API 200 repose JSON:
 
 
 class _Coordinate(BaseModel):
-    latitude: Optional[str]
-    longitude: Optional[str]
+    latitude: Optional[str] = ""
+    longitude: Optional[str] = ""
 
 
 class _Location(BaseModel):

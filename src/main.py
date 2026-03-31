@@ -4,7 +4,7 @@ from src.model.Cep import Cep
 
 from fastapi import FastAPI
 from dotenv import load_dotenv
-import requests, os, asyncio, httpx
+import os, httpx
 
 load_dotenv()
 BASE_URL: str = os.getenv("API_URL")

@@ -16,16 +16,17 @@ class Address(BaseModel):
     def from_response(cls, response: CepApiSuccess) -> "Address":
         cep: Cep = Cep(value=response.cep)
 
-        latitude: float = float(response.location.coordinates.latitude)
-        is_south: bool = latitude < 0
+        coordinate: str = ""
+        latitude: Optional[str] = response.location.coordinates.latitude
+        longitude: Optional[str] = response.location.coordinates.longitude
 
-        longitude: float = float(response.location.coordinates.longitude)
-        is_west: bool = longitude < 0
-
-        coordinate: str = (
-            f"{abs(latitude)}°{'S' if is_south else 'N'} "
-            f"{abs(longitude)}°{'O' if is_west else 'L'}"
-        )
+        if latitude and longitude:
+            is_south: bool = float(latitude) < 0
+            is_west: bool = float(longitude) < 0
+            coordinate = (
+                f"{latitude.replace('-', '')}°{'S' if is_south else 'N'} "
+                f"{longitude.replace('-', '')}°{'O' if is_west else 'L'}"
+            )
 
         return Address(
             cep=cep,

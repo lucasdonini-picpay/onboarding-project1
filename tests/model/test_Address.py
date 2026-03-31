@@ -21,4 +21,4 @@ def test_valid_data():
     assert address.city == response.city
     assert address.neighborhood == response.neighborhood
     assert address.street == response.street
-    assert address.coordinates == "20.0°S 20.0°O"
+    assert address.coordinates == "20°S 20°O"
