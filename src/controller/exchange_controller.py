@@ -6,7 +6,7 @@ from httpx import Response
 from datetime import datetime
 import httpx, os
 
-from src.model.external.ExchangeApiSuccess import ExchangeApiSuccess, ExchangeValue
+from model.external.exchange_api_types import ExchangeApiSuccess, ExchangeValue
 from src.model.exchange_controller_types import ExchangeRequest, ExchangeResponse
 
 load_dotenv()

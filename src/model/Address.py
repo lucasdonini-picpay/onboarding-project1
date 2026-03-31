@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 from typing import Optional
-from src.model.external.CepApiSuccess import CepApiSuccess
+from model.external.cep_api_types import CepApiSuccess
 
 
 class Address(BaseModel):

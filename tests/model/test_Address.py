@@ -1,5 +1,5 @@
-from model.Address import Address
-from model.external.CepApiSuccess import CepApiSuccess, _Location, _Coordinate
+from model.address import Address
+from model.external.cep_api_types import CepApiSuccess, _Location, _Coordinate
 
 
 def test_valid_data():
