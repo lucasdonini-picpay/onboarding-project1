@@ -1,20 +1,15 @@
 from fastapi import APIRouter
 from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
-from dotenv import load_dotenv
 from httpx import Response
-import httpx, os
+import httpx
 
 from src.model.external.cep_api_types import CepApiSuccess
 from src.model.address import Address
+from src.model.env_settings import EnvSettings
 from src.utils.cep_utils import validate_cep
 
-load_dotenv()
-ENV_VAR_NAME = "CEP_API_URL"
-BASE_URL = os.getenv(ENV_VAR_NAME)
-if not BASE_URL:
-    raise RuntimeError(f"Missing environment variable: {ENV_VAR_NAME}")
-
+env = EnvSettings()
 router = APIRouter()
 
 
@@ -24,7 +19,7 @@ async def get_cep(cep: str) -> JSONResponse:
         raise ValueError("Invalid CEP")
 
     client = httpx.AsyncClient(verify=False)
-    response: Response = await client.get(f"{BASE_URL}/{cep}")
+    response: Response = await client.get(f"{env.cep_api_url}/{cep}")
 
     try:
         response.raise_for_status()

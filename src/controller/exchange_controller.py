@@ -1,27 +1,25 @@
 from fastapi import APIRouter
 from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
-from dotenv import load_dotenv
 from httpx import Response
 from datetime import datetime
-import httpx, os
+import httpx
 
 from src.model.external.exchange_api_types import ExchangeApiSuccess, ExchangeValue
 from src.model.exchange_controller_types import ExchangeRequest, ExchangeResponse
+from src.model.env_settings import EnvSettings
 
-load_dotenv()
-ENV_VAR_NAME = "EXCHANGE_API_URL"
-BASE_URL = os.getenv(ENV_VAR_NAME)
-if not BASE_URL:
-    raise RuntimeError(f"Missing environment variable: {ENV_VAR_NAME}")
 
+env = EnvSettings()
 router = APIRouter()
 
 
 @router.get("/exchange/{currency}/{original}")
 async def calculate_exchange(currency: str, original: float) -> JSONResponse:
     client = httpx.AsyncClient(verify=False)
-    response: Response = await client.get(f"{BASE_URL}/{currency}/{datetime.now()}")
+    response: Response = await client.get(
+        f"{env.exchange_api_url}/{currency}/{datetime.now()}"
+    )
     parsed_response: ExchangeApiSuccess
 
     try:
