@@ -1,6 +1,5 @@
 from fastapi import APIRouter
 from fastapi.responses import JSONResponse
-from fastapi.encoders import jsonable_encoder
 from httpx import Response
 from datetime import datetime
 import httpx
@@ -42,4 +41,6 @@ async def calculate_exchange(currency: str, original: float) -> JSONResponse:
         ask=original / rate.cotacao_venda / rate.paridade_venda,
         currency=parsed_response.moeda,
     )
-    return JSONResponse(status_code=200, content=jsonable_encoder(exchange_response))
+    return JSONResponse(
+        status_code=200, content=exchange_response.model_dump(mode="json")
+    )

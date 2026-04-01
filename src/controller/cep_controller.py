@@ -1,6 +1,5 @@
 from fastapi import APIRouter
 from fastapi.responses import JSONResponse
-from fastapi.encoders import jsonable_encoder
 from httpx import Response
 import httpx
 
@@ -28,4 +27,4 @@ async def get_cep(cep: str) -> JSONResponse:
 
     parsed_response = CepApiSuccess(**response.json())
     address = Address.from_response(parsed_response)
-    return JSONResponse(status_code=200, content=jsonable_encoder(address))
+    return JSONResponse(status_code=200, content=address.model_dump(mode="json"))
