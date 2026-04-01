@@ -27,9 +27,9 @@ async def calculate_exchange(currency: str, original: float) -> JSONResponse:
         return JSONResponse(status_code=response.status_code, content=response.json())
 
     parsed_response = ExchangeApiSuccess(**response.json())
-    rate: ExchangeValue = sorted(
-        parsed_response.cotacoes, key=lambda c: c.data_hora_cotacao, reverse=True
-    )[0]
+    rate: ExchangeValue = max(
+        parsed_response.cotacoes, key=lambda c: c.data_hora_cotacao
+    )
 
     if not rate:
         raise RuntimeError("API Response returned empty")
