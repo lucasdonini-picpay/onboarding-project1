@@ -5,7 +5,7 @@ from datetime import datetime
 import httpx
 
 from src.model.external.exchange_api_types import ExchangeApiSuccess, ExchangeValue
-from src.model.exchange_controller_types import ExchangeResponse
+from src.model.exchange_controller_types import ExchangeResponse, Currency
 from src.model.env_settings import EnvSettings
 
 env = EnvSettings()
@@ -13,10 +13,10 @@ router = APIRouter()
 
 
 @router.get("/exchange/{currency}/{original}")
-async def calculate_exchange(currency: str, original: float) -> JSONResponse:
+async def calculate_exchange(currency: Currency, original: float) -> JSONResponse:
     client = httpx.AsyncClient(verify=False)
     response: Response = await client.get(
-        f"{env.exchange_api_url}/{currency}/{datetime.now()}"
+        f"{env.exchange_api_url}/{currency.value}/{datetime.now()}"
     )
     parsed_response: ExchangeApiSuccess
 
