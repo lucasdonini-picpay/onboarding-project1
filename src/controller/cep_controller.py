@@ -4,19 +4,15 @@ from httpx import Response
 import httpx
 
 from src.model.external.cep_api_types import CepApiSuccess
-from src.model.address import Address
+from src.model.cep_controller_types import Address, Cep
 from src.model.env_settings import EnvSettings
-from src.utils.cep_utils import validate_cep
 
 env = EnvSettings()
 router = APIRouter()
 
 
 @router.get("/cep/{cep}")
-async def get_cep(cep: str) -> JSONResponse:
-    if not validate_cep(cep):
-        raise ValueError("Invalid CEP")
-
+async def get_cep(cep: Cep) -> JSONResponse:
     client = httpx.AsyncClient(verify=False)
     response: Response = await client.get(f"{env.cep_api_url}/{cep}")
 

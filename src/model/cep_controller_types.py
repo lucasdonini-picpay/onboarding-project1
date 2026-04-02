@@ -1,6 +1,7 @@
-from pydantic import BaseModel
-from typing import Optional
+from pydantic import BaseModel, AfterValidator
+from typing import Optional, Annotated
 from src.model.external.cep_api_types import CepApiSuccess
+import re
 
 
 class Address(BaseModel):
@@ -33,3 +34,12 @@ class Address(BaseModel):
             street=response.street,
             coordinates=coordinate if coordinate else None,
         )
+
+
+def _validate_cep(value: str) -> str:
+    if not re.match(r"\d{5}-?\d{3}", value):
+        raise ValueError("Invalid CEP")
+    return value
+
+
+Cep = Annotated[str, AfterValidator(_validate_cep)]

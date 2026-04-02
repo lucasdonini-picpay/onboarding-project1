@@ -1,4 +1,4 @@
-from model.address import Address
+from model.cep_controller_types import Address
 from model.external.cep_api_types import CepApiSuccess, _Location, _Coordinate
 
 
