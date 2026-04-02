@@ -1,11 +1,11 @@
 from fastapi import APIRouter
 from fastapi.responses import JSONResponse
-from httpx import Response
-import httpx
+from httpx import HTTPStatusError
 
-from src.model.external.cep_api_types import CepApiSuccess
 from src.model.cep_types import Address, Cep
 from src.model.env_settings import EnvSettings
+from src.service.cep_requests import request_address
+from src.infrastructure.logger import logger
 
 env = EnvSettings()
 router = APIRouter()
@@ -13,14 +13,14 @@ router = APIRouter()
 
 @router.get("/cep/{cep}")
 async def get_cep(cep: Cep) -> JSONResponse:
-    client = httpx.AsyncClient(verify=False)
-    response: Response = await client.get(f"{env.cep_api_url}/{cep}")
-
+    status_code: int
+    content: dict
     try:
-        response.raise_for_status()
-    except Exception:
-        return JSONResponse(status_code=response.status_code, content=response.json())
-
-    parsed_response = CepApiSuccess(**response.json())
-    address = Address.from_response(parsed_response)
-    return JSONResponse(status_code=200, content=address.model_dump(mode="json"))
+        address: Address = await request_address(cep)
+        status_code = 200
+        content = address.model_dump()
+    except HTTPStatusError as e:
+        logger.error("External CEP API returned an error")
+        status_code = e.response.status_code
+        content = e.response.json()
+    return JSONResponse(status_code=status_code, content=content)
