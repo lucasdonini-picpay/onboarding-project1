@@ -5,7 +5,7 @@ from datetime import datetime
 import httpx
 
 from src.model.external.exchange_api_types import ExchangeApiSuccess, ExchangeValue
-from src.model.exchange_controller_types import ExchangeResponse, Currency
+from src.model.exchange_types import ExchangeResponse, Currency
 from src.model.env_settings import EnvSettings
 
 env = EnvSettings()

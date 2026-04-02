@@ -4,7 +4,7 @@ from httpx import Response
 import httpx
 
 from src.model.external.cep_api_types import CepApiSuccess
-from src.model.cep_controller_types import Address, Cep
+from src.model.cep_types import Address, Cep
 from src.model.env_settings import EnvSettings
 
 env = EnvSettings()
