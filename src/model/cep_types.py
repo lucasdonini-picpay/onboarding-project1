@@ -37,7 +37,7 @@ class Address(BaseModel):
 
 
 def _validate_cep(value: str) -> str:
-    if not re.match(r"\d{5}-?\d{3}", value):
+    if not re.match(r"^\d{5}-?\d{3}$", value):
         raise ValueError("Invalid CEP")
     return value
 
